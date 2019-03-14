@@ -1,0 +1,16 @@
+Package	Function Name	1-arg	2-args	Explicit Arg Names	Extra chars for implicit args	Core Syntax	Core Syntax Nchars	formals/body separator	comments	author	URL
+base r	function	function(x) x + 1	function(x, y) x + y	Yes		function()	10			R Core	
+rlang	as_closure	as_closure(~.x + 1))	as_closure(~.x+.y)	No	.x	f(~)	4		used within purrr	Lionel Henry et al	https://cran.r-project.org/package=rlang
+pryr	f (implicit args)	f(x + 1)	f(x + y)	No		f()	3			Hadley Wickham	https://cran.r-project.org/package=pryr
+pryr	f (explicit args)	f(x, x + 1)	f(x, y, x + y)	Yes		f()	3	,		Hadley Wickham	
+nofrills	fn	fn(x ~ x + 1)	fn(x, y ~ x + y)	Yes		f(~)	4	~	Fully NSE aware (!!)	Eugene Ha	https://cran.r-project.org/package=nofrills
+gsubfn	as.function.formula (implicit args)	as.function.formula(~ x + 1)	as.function.formula(~ x + y)	No		f(~)	4			G. Grothendieck	https://cran.r-project.org/package=gsubfn
+gsubfn	as.function.formula (explicit args)	as.function.formula(x ~ x + 1)	as.function.formula(x + y ~ x + y + z)	Yes		f(~)	4	~			
+wrapr	lambda	lambda(x, x + 1)	lambda(x, y, x + y)	Yes		f()	3	,		John Mount et al	https://cran.r-project.org/package=wrapr
+lambda	f	f(.(x) + 1)	f(.(x) + .(y))	No	.(x)	f()	3			Jim Hester	https://github.com/jimhester/lambda
+lambdass	~~	~~ ..1 + 1	~~ ..1 + ..2	No	..1	~~	2				https://github.com/TobCap/lambdass
+lambdass	f.()	f.(x, x + 1)	f.(x, y, x + y)	Yes		f()	3	,			
+lambdass	%->%	f(x) %->% {x + 1}	f(x, y) %->% {x + y} 	Yes		f()%->%{} 	9	`%->% 			
+Not packaged	lambda	lambda(x ~ x + 1L)	lambda(x + y ~ x + y)	Yes		f(~)	4	~		Edward Visel	https://alistaire.rbind.io/blog/anonymous-functions/
+Not packaged	lambda	lambda(x:x + 1)	lambda(x, y:x + y)	Yes		f(:)	4	,	Code no longer available	Koji MAKIYAMA	https://rpubs.com/hoxo_m/lambdaR
+Not packaged	[] -> 	[x] -> x + 1 	[x, y] -> x + y	Yes		[]-> 	4	`-> 	Speculative Future R syntax	Lionel Henry	https://lionel-.github.io/2016/02/15/ideas-for-an-updated-r-syntax/
