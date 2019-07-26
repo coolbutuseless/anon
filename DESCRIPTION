@@ -1,7 +1,7 @@
 Package: anon
 Type: Package
 Title: Lambda Expression Syntax
-Version: 0.1.0
+Version: 0.1.1
 Author: mikefc
 Maintainer: mikefc <mikefc@coolbutuseless.com>
 Description: Lambda expression syntax.
@@ -14,5 +14,5 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr

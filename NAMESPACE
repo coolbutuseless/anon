@@ -2,6 +2,7 @@
 
 export(L)
 export(as_function_formula)
+export(formula_to_1arg_function)
 export(lambda)
 export(patch_purrr_mapper)
 import(rlang)
