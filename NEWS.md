@@ -2,7 +2,8 @@
 # anon 0.1.2  20200111
 
 * Replace `formula_to_1arg_function()` with `formula_to_function()` which 
-  creates anonymous functions with multiple arguments.
+  creates anonymous functions with multiple arguments (.x, .y, and .z) and 
+  includes `.` as an alias for the first argument, `.x`
   
   
 # anon 0.1.1

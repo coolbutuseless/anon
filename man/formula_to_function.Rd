@@ -19,6 +19,7 @@ formal arguments of \code{.x, .y, .z}
 This aims to be a dependency free, very simple formula-to-function convertor.
 }
 \details{
-The only supported arguments are \code{.x, .y, .z}, all other variables are assumed to
+The only supported arguments for the generated function are \code{.x, .y, .z}.
+A single period (\code{.}) is an alias for \code{.x}. All other variables are assumed to
 come from the environment.
 }

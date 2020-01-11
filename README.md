@@ -128,24 +128,27 @@ extracted from `anon` and used in your own code. It has some severe
 restrictions
 
   - Input can only be a 1-sided formula e.g. `~.x + 1`
-  - The created function takes 3 formals argument (`.x`, `.y`, `.z`) and
-    they must be given in this order, but it is not necessary to use
-    them all.
+  - The created function takes 3 formal argument (`.x`, `.y`, `.z`)
+      - they must be given in this order, but it is not necessary to use
+        them all
+      - a single period (`.`) is also available as an alias of the first
+        argument, `.x`
 
 <!-- end list -->
 
 ``` r
-f <- formula_to_function(~.x + 1)
-f
-#> function (.x, .y, .z) 
-#> .x + 1
-f(2.5)
-#> [1] 3.5
+f <- formula_to_function(~.x + .y)
+f(2.5, 3)
+#> [1] 5.5
+
+
+g <- formula_to_function(~. + 10)
+g(9)
+#> [1] 19
 ```
 
-After excluding the error checking, the body of `formula_to_function()`
-is very simple, and is easily copy/pasted into your code to maybe avoid
-incurring a dependency on `rlang` or `anon`
+The body of `formula_to_function()` is very simple, and is easily
+copy/pasted into your code.
 
 ``` r
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,7 +156,8 @@ incurring a dependency on `rlang` or `anon`
 #'
 #' This aims to be a dependency free, very simple formula-to-function convertor.
 #'
-#' The only supported arguments are \code{.x, .y, .z}, all other variables are assumed to
+#' The only supported arguments for the generated function are \code{.x, .y, .z}.
+#' A single period (\code{.}) is an alias for \code{.x}. All other variables are assumed to
 #' come from the environment.
 #'
 #' @param form formula
@@ -175,10 +179,10 @@ formula_to_function <- function (form, .env = parent.frame())  {
   }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # The list of formal arguments is always just '.x'
+  # Creat func with formal arguments (.x, .y, .z).   '.' acts an alias for '.x'
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   f              <- function() {}
-  formals(f)     <- alist(.x = , .y =, .z =)
+  formals(f)     <- alist(.x = , .y =, .z =, . = .x)
   body(f)        <- form[[-1]]
   environment(f) <- .env
 

@@ -1,10 +1,13 @@
 
+globalVariables('.x')
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Convert a formula to a function
 #'
 #' This aims to be a dependency free, very simple formula-to-function convertor.
 #'
-#' The only supported arguments are \code{.x, .y, .z}, all other variables are assumed to
+#' The only supported arguments for the generated function are \code{.x, .y, .z}.
+#' A single period (\code{.}) is an alias for \code{.x}. All other variables are assumed to
 #' come from the environment.
 #'
 #' @param form formula
@@ -26,10 +29,10 @@ formula_to_function <- function (form, .env = parent.frame())  {
   }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # The list of formal arguments is always just '.x'
+  # Creat func with formal arguments (.x, .y, .z).   '.' acts an alias for '.x'
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   f              <- function() {}
-  formals(f)     <- alist(.x = , .y =, .z =)
+  formals(f)     <- alist(.x = , .y =, .z =, . = .x)
   body(f)        <- form[[-1]]
   environment(f) <- .env
 
