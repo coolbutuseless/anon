@@ -6,11 +6,10 @@
 <!-- badges: start -->
 
 ![](https://img.shields.io/badge/cool-useless-green.svg)
-![](https://img.shields.io/badge/status-rough-red.svg)
 <!-- badges: end -->
 
-The `anon` package provides two functions to help define succinct
-anonymous functions (also called *lambdas*).
+The `anon` package provides three functions to help define succinct
+anonymous functions (also often referred to as *lambdas*).
 
 ## Features
 
@@ -29,11 +28,11 @@ anonymous functions (also called *lambdas*).
         formal arguments are extracted from the expression on the LHS of
         a two-sided formula e.g. `a:b ~ a + b + 1` becomes `function(a,
         b) {a + b + 1}`
-3.  `formula_to_1arg_function()` is the simplest example of converting a
+3.  `formula_to_function()` is the simplest example of converting a
     formula to a function. This function is free of any dependency on
     `rlang`, but has quite limited functionality i.e. it assumes that
-    the required function only takes 1 argument, and that it is always
-    `.x`
+    the required function only takes a maximum of 3 arguments (`.x`,
+    `.y`, `.z`)
 
 ## Installation
 
@@ -117,18 +116,23 @@ pmap_int(list(1:2, 3:4, 5:6, 7:8), ~a * b * c * d)
 #> [1] 105 384
 ```
 
-## Example use of `formula_to_function()`
+## `formula_to_function()`
 
-`anon::formula_to_function()` is a dependency-free way to create
-functions from formulas. It has some severe restrictions
+The `anon` package aims to be comprehensive on what sort of formula
+construction is allowed. However it is not yet on CRAN (which can be
+inconvenient) and it is a dependency you may not want.
+
+So `anon::formula_to_function()` is an example of a very portable,
+dependency-free way to create functions from formulas that could be
+extracted from `anon` and used in your own code. It has some severe
+restrictions
 
   - Input can only be a 1-sided formula e.g. `~.x + 1`
-  - The created function only takes 3 formal argument (`.x`, `.y`, `.z`)
-    - they must be given in this order, but it is not necessary to use
+  - The created function takes 3 formals argument (`.x`, `.y`, `.z`) and
+    they must be given in this order, but it is not necessary to use
     them all.
 
-The code for `formula_to_function()` is easily copy/pasted into other
-packages to avoid incurring a dependency on `rlang` or `anon`
+<!-- end list -->
 
 ``` r
 f <- formula_to_function(~.x + 1)
@@ -140,10 +144,39 @@ f(2.5)
 ```
 
 After excluding the error checking, the body of `formula_to_function()`
-is very simple, and easy to include where you need it.
+is very simple, and is easily copy/pasted into your code to maybe avoid
+incurring a dependency on `rlang` or `anon`
 
 ``` r
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Convert a formula to a function
+#'
+#' This aims to be a dependency free, very simple formula-to-function convertor.
+#'
+#' The only supported arguments are \code{.x, .y, .z}, all other variables are assumed to
+#' come from the environment.
+#'
+#' @param form formula
+#' @param .env environment of function
+#'
+#' @return function whose code is taken from the RHS of the given formula, with
+#' formal arguments of \code{.x, .y, .z}
+#'
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 formula_to_function <- function (form, .env = parent.frame())  {
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # This is the entirity of the sanity checking
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  if (!inherits(form, 'formula') || length(form) != 2L) {
+    stop("formula_to_function(): Argument 'form' must be a formula. ",
+         "Current class: ", deparse(class(form)), call. = FALSE)
+  }
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # The list of formal arguments is always just '.x'
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   f              <- function() {}
   formals(f)     <- alist(.x = , .y =, .z =)
   body(f)        <- form[[-1]]

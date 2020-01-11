@@ -10,7 +10,8 @@
 #' @param form formula
 #' @param .env environment of function
 #'
-#' @return function
+#' @return function whose code is taken from the RHS of the given formula, with
+#' formal arguments of \code{.x, .y, .z}
 #'
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,7 +21,7 @@ formula_to_function <- function (form, .env = parent.frame())  {
   # This is the entirity of the sanity checking
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!inherits(form, 'formula') || length(form) != 2L) {
-    stop("formula_to_1arg_function(): Argument 'form' must be a formula. ",
+    stop("formula_to_function(): Argument 'form' must be a formula. ",
          "Current class: ", deparse(class(form)), call. = FALSE)
   }
 

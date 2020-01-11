@@ -12,7 +12,8 @@ formula_to_function(form, .env = parent.frame())
 \item{.env}{environment of function}
 }
 \value{
-function
+function whose code is taken from the RHS of the given formula, with
+formal arguments of \code{.x, .y, .z}
 }
 \description{
 This aims to be a dependency free, very simple formula-to-function convertor.
