@@ -55,8 +55,7 @@ The following calls all create the same anonymous function:
   - `L(x, y, x + y)`
   - `L(x, y ~ x + y)`
   - `L(x, y, ~x + y)`
-  - `L(x:y ~ x +
-y)`
+  - `L(x:y ~ x + y)`
 
 ## Example use of `patch_purrr_mapper()` to enable extended functionality for lambdas in `purrr`
 
@@ -118,31 +117,35 @@ pmap_int(list(1:2, 3:4, 5:6, 7:8), ~a * b * c * d)
 #> [1] 105 384
 ```
 
-## Example use of `formula_to_1arg_function()`
+## Example use of `formula_to_function()`
 
-`formula_to_1arg_function()` is a dependency-free way to create
+`anon::formula_to_function()` is a dependency-free way to create
 functions from formulas. It has some severe restrictions
 
-  - Input can only be a 1-sided formula
-  - the created function only takes one formal argument called `.x`.
-    This is not configurable.
+  - Input can only be a 1-sided formula e.g. `~.x + 1`
+  - The created function only takes 3 formal argument (`.x`, `.y`, `.z`)
+    - they must be given in this order, but it is not necessary to use
+    them all.
 
-This code is easily copy/pasted into other packages without incurring a
-dependency on `rlang` or `anon`
+The code for `formula_to_function()` is easily copy/pasted into other
+packages to avoid incurring a dependency on `rlang` or `anon`
 
 ``` r
-f <- formula_to_1arg_function(~.x + 1)
+f <- formula_to_function(~.x + 1)
+f
+#> function (.x, .y, .z) 
+#> .x + 1
 f(2.5)
 #> [1] 3.5
 ```
 
-After excluding the error checking, the body of
-`formula_to_1arg_function()` is very simple:
+After excluding the error checking, the body of `formula_to_function()`
+is very simple, and easy to include where you need it.
 
 ``` r
-formula_to_1arg_function <- function (form, .env = parent.frame())  {
+formula_to_function <- function (form, .env = parent.frame())  {
   f              <- function() {}
-  formals(f)     <- alist(.x = )
+  formals(f)     <- alist(.x = , .y =, .z =)
   body(f)        <- form[[-1]]
   environment(f) <- .env
 

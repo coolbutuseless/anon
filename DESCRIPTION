@@ -1,14 +1,14 @@
 Package: anon
 Type: Package
 Title: Lambda Expression Syntax
-Version: 0.1.1
+Version: 0.1.2
 Author: mikefc
 Maintainer: mikefc <mikefc@coolbutuseless.com>
 Description: Lambda expression syntax.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Imports:
   rlang
 Suggests: 

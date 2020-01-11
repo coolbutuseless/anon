@@ -1,4 +1,10 @@
 
+# anon 0.1.2  20200111
+
+* Replace `formula_to_1arg_function()` with `formula_to_function()` which 
+  creates anonymous functions with multiple arguments.
+  
+  
 # anon 0.1.1
 
 * Add `formula_to_1arg_function()` as an example of a simple function builder
